@@ -1,24 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React , {useState} from 'react';
 import './App.css';
 
-function App() {
+
+import ToolBar from './components/Toolbar/Toolbar'
+import SideDrawer from './components/SideDrawer/SideDrawer';
+import BackDrop from './components/BackDrop/BackDrop';
+
+const App = () => {
+
+  let sideDrawer = null;
+  let backdrop = null;
+
+  const [sidedrawerTogglerState, setsidedrawerTogglerState] = useState(false)
+
+  const [backdropState, setbackdropState] = useState(false)
+
+  const drawerToggleButtonClickHandler = () => {
+    console.log('ToggleButton Clicked')
+    setsidedrawerTogglerState(!sidedrawerTogglerState)
+    setbackdropState(()=>{
+      return true;
+    })
+  }
+
+  const backdropClickHandler = () => {
+    console.log('Clicked Backdrop')
+    setsidedrawerTogglerState(false)
+    setbackdropState(false)
+  }
+
+
+  
+  if(backdropState){
+    backdrop = <BackDrop click={backdropClickHandler}/>
+  }
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" >
+      <ToolBar click={drawerToggleButtonClickHandler}/>
+      <SideDrawer show={sidedrawerTogglerState}/>
+      {backdrop}
+      <main style={{marginTop:56, backgroundColor:'#92a8d1'}}>
+        <p>The content goes here</p>
+      </main>
     </div>
   );
 }
